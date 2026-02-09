@@ -9,9 +9,10 @@ import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { Image } from 'expo-image';
 import { GoogleAuthProvider, signInWithCredential, signInWithPopup, signInWithRedirect } from 'firebase/auth';
 import { collection, doc, getDoc, getDocs, query } from 'firebase/firestore';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { ActivityIndicator, Alert, KeyboardAvoidingView, Platform, ScrollView, Text, TextInput, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useFocusEffect } from '@react-navigation/native';
 
 export default function HomeScreen() {
   const { currentUser, login, signup, resetPassword } = useAuth();
@@ -36,96 +37,96 @@ export default function HomeScreen() {
   }>>({});
   const [globalLoading, setGlobalLoading] = useState(false);
 
-  useEffect(() => {
+  const fetchData = useCallback(async () => {
     if (!currentUser) return;
+    setGlobalLoading(true);
 
-    const fetchData = async () => {
-      setGlobalLoading(true);
+    const newLevelsData: typeof levelsData = {};
 
-      const newLevelsData: typeof levelsData = {};
+    await Promise.all(LEVELS.map(async (level) => {
+      try {
+        const targetCourseId = level.courseId || level.id;
+        const levelDocRef = doc(db, 'courses', targetCourseId);
+        const levelDocSnap = await getDoc(levelDocRef);
 
-      await Promise.all(LEVELS.map(async (level) => {
-        try {
-          // Fetch level metadata (title/description/icon/type) from Firestore
-          const targetCourseId = level.courseId || level.id;
-          const levelDocRef = doc(db, 'courses', targetCourseId);
-          const levelDocSnap = await getDoc(levelDocRef);
+        let levelType = level.type;
+        let levelTitle = level.title;
+        let levelDescription: string | undefined = undefined;
+        let levelIcon = level.icon;
 
-          let levelType = level.type; // Use default from config as fallback
-          let levelTitle = level.title;
-          let levelDescription: string | undefined = undefined;
-          let levelIcon = level.icon;
-
-          if (levelDocSnap.exists()) {
-            const levelData = levelDocSnap.data();
-            if (levelData.title) {
-              levelTitle = levelData.title as string;
-            }
-            if (levelData.description) {
-              levelDescription = levelData.description as string;
-            }
-            if (levelData.icon) {
-              levelIcon = levelData.icon as string;
-            }
-            if (levelData.type) {
-              levelType = levelData.type as LevelType;
-            }
+        if (levelDocSnap.exists()) {
+          const levelData = levelDocSnap.data();
+          if (levelData.title) {
+            levelTitle = levelData.title as string;
           }
-
-          // Fetch items count
-          const itemsRef = collection(db, 'courses', targetCourseId, 'items');
-          const q = query(itemsRef);
-          const snapshot = await getDocs(q);
-          const totalItems = snapshot.docs.length;
-
-          // Fetch user progress
-          let learnedItems = 0;
-          if (currentUser) {
-            try {
-              const progressRef = doc(db, 'users', currentUser.uid, 'progress', targetCourseId);
-              const progressSnap = await getDoc(progressRef);
-              
-              if (progressSnap.exists()) {
-                const data = progressSnap.data();
-                if (data.learnedItemIds && Array.isArray(data.learnedItemIds)) {
-                    learnedItems = data.learnedItemIds.length;
-                }
-              }
-            } catch (e) {
-              console.error(`Error fetching progress for ${targetCourseId}:`, e);
-            }
+          if (levelData.description) {
+            levelDescription = levelData.description as string;
           }
-
-          newLevelsData[level.id] = {
-            totalItems,
-            learnedItems,
-            isCompleted: totalItems > 0 && learnedItems >= totalItems,
-            loading: false,
-            type: levelType,
-            title: levelTitle,
-            description: levelDescription,
-            icon: levelIcon,
-          };
-        } catch (error) {
-          console.error(`Error fetching items for level ${level.id}:`, error);
-          newLevelsData[level.id] = {
-              totalItems: 0,
-              learnedItems: 0,
-              isCompleted: false,
-              loading: false,
-              type: level.type,
-              title: level.title,
-              icon: level.icon
-          };
+          if (levelData.icon) {
+            levelIcon = levelData.icon as string;
+          }
+          if (levelData.type) {
+            levelType = levelData.type as LevelType;
+          }
         }
-      }));
 
-      setLevelsData(newLevelsData);
-      setGlobalLoading(false);
-    };
+        const itemsRef = collection(db, 'courses', targetCourseId, 'items');
+        const q = query(itemsRef);
+        const snapshot = await getDocs(q);
+        const totalItems = snapshot.docs.length;
 
-    fetchData();
+        let learnedItems = 0;
+        try {
+          const progressRef = doc(db, 'users', currentUser.uid, 'progress', targetCourseId);
+          const progressSnap = await getDoc(progressRef);
+          
+          if (progressSnap.exists()) {
+            const data = progressSnap.data();
+            if (data.learnedItemIds && Array.isArray(data.learnedItemIds)) {
+                learnedItems = data.learnedItemIds.length;
+            }
+          }
+        } catch (e) {
+          console.error(`Error fetching progress for ${targetCourseId}:`, e);
+        }
+
+        newLevelsData[level.id] = {
+          totalItems,
+          learnedItems,
+          isCompleted: totalItems > 0 && learnedItems >= totalItems,
+          loading: false,
+          type: levelType,
+          title: levelTitle,
+          description: levelDescription,
+          icon: levelIcon,
+        };
+      } catch (error) {
+        console.error(`Error fetching items for level ${level.id}:`, error);
+        newLevelsData[level.id] = {
+            totalItems: 0,
+            learnedItems: 0,
+            isCompleted: false,
+            loading: false,
+            type: level.type,
+            title: level.title,
+            icon: level.icon
+        };
+      }
+    }));
+
+    setLevelsData(newLevelsData);
+    setGlobalLoading(false);
   }, [currentUser]);
+
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
+
+  useFocusEffect(
+    useCallback(() => {
+      fetchData();
+    }, [fetchData])
+  );
 
   useEffect(() => {
     if (Platform.OS !== 'web' && webClientId) {
