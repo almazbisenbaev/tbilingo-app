@@ -421,6 +421,15 @@ export default function HomeScreen() {
           );
         })}
         </View>
+
+        <View className="w-full max-w-[640px] self-center mb-10">
+          <View className="p-6 items-center">
+            <Text className="text-xl text-center">
+              More levels are on the way. Stay tuned!
+            </Text>
+          </View>
+        </View>
+
       </ScrollView>
     </SafeAreaView>
   );
