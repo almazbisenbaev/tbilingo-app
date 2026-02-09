@@ -8,7 +8,7 @@ import { imageMap } from '@/utils/imageMap';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { Image } from 'expo-image';
 import { GoogleAuthProvider, signInWithCredential, signInWithPopup, signInWithRedirect } from 'firebase/auth';
-import { collection, doc, getDoc, getDocs, query } from 'firebase/firestore';
+import { collection, doc, getDoc, getDocs, onSnapshot, query } from 'firebase/firestore';
 import React, { useCallback, useEffect, useState } from 'react';
 import { ActivityIndicator, Alert, KeyboardAvoidingView, Platform, ScrollView, Text, TextInput, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -126,6 +126,50 @@ export default function HomeScreen() {
     useCallback(() => {
       fetchData();
     }, [fetchData])
+  );
+
+  useFocusEffect(
+    useCallback(() => {
+      if (!currentUser) return;
+      const unsubscribers: Array<() => void> = [];
+
+      LEVELS.forEach((level) => {
+        const targetCourseId = level.courseId || level.id;
+        const progressRef = doc(db, 'users', currentUser.uid, 'progress', targetCourseId);
+        const unsubscribe = onSnapshot(progressRef, (progressSnap) => {
+          let learnedItems = 0;
+          if (progressSnap.exists()) {
+            const data = progressSnap.data();
+            if (data.learnedItemIds && Array.isArray(data.learnedItemIds)) {
+              learnedItems = data.learnedItemIds.length;
+            }
+          }
+
+          setLevelsData((prev) => {
+            const prevLevel = prev[level.id];
+            const totalItems = prevLevel?.totalItems ?? 0;
+            return {
+              ...prev,
+              [level.id]: {
+                totalItems,
+                learnedItems,
+                isCompleted: totalItems > 0 && learnedItems >= totalItems,
+                loading: false,
+                type: prevLevel?.type ?? level.type,
+                title: prevLevel?.title ?? level.title,
+                description: prevLevel?.description,
+                icon: prevLevel?.icon ?? level.icon,
+              },
+            };
+          });
+        });
+        unsubscribers.push(unsubscribe);
+      });
+
+      return () => {
+        unsubscribers.forEach((u) => u());
+      };
+    }, [currentUser])
   );
 
   useEffect(() => {
