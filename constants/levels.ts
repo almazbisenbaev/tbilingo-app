@@ -63,4 +63,13 @@ export const LEVELS: LevelConfig[] = [
     requiredLevelTitle: 'Learn Greetings', 
     type: 'words' 
   },
+  { 
+    id: '7', 
+    courseId: 'pronouns-2', 
+    title: "Pronouns 2", 
+    icon: '/images/icon-phrases.svg', 
+    requiredLevelId: '6', 
+    requiredLevelTitle: 'Learn Pronouns', 
+    type: 'phrases' 
+  },
 ];
