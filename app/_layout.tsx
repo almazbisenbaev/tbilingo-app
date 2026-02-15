@@ -30,17 +30,22 @@ export default function RootLayout() {
   return (
     <AuthProvider>
       <ThemeProvider value={CustomDefaultTheme}>
+
         <Head>
           <link rel="manifest" href="/manifest.json" />
           <meta name="theme-color" content="#FFFFFF" />
           <link rel="icon" href="/favicon.ico" />
         </Head>
+
         <Stack screenOptions={{ header: (props) => <AppHeader {...props} /> }}>
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
           <Stack.Screen name="modal" options={{ presentation: 'modal', title: 'Modal' }} />
         </Stack>
+        
         <StatusBar style="auto" />
+
         <InstallPrompt />
+
       </ThemeProvider>
     </AuthProvider>
   );
