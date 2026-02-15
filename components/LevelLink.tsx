@@ -32,10 +32,10 @@ export default function LevelLink({
 
     return (
         <View
-            className={`p-6 mb-4 rounded-xl border-2 flex flex-col items-center h-auto min-h-0 ${
+            className={`bg-white p-6 mb-4 rounded-xl border-2 flex flex-col items-center h-auto min-h-0 ${
                 locked ? 'border-gray-100' : 
-                isCompleted ? 'bg-success/10 border-success/10' : 
-                'bg-card border-gray-100'
+                isCompleted ? 'border-transparent' : 
+                'border-transparent'
             } ${disabled ? 'opacity-50' : ''}`}
         >
             <View className="mb-4">
@@ -44,11 +44,11 @@ export default function LevelLink({
                     size={100} 
                     strokeWidth={3}
                     color={isCompleted ? '#58CC0200' : '#F97316'}
-                    backgroundColor={isCompleted ? '#58CC0200' : '#E5E5E5'}
+                    backgroundColor={isCompleted ? '#58CC0220' : '#E5E5E5'}
                 >
                     <View className="items-center justify-center w-full h-full">
                         {isCompleted ? (
-                            <Ionicons name="checkmark-circle" size={48} color="#58CC02" />
+                            <Ionicons name="checkmark" size={40} color="#58CC02" />
                         ) : iconSource && (
                             <Image 
                                 source={iconSource} 
@@ -64,7 +64,7 @@ export default function LevelLink({
             </View>
             
             <View className="items-center">
-                <Text className={`text-lg font-semibold text-center ${isCompleted ? 'text-success' : 'text-gray-900'}`}>{title}</Text>
+                <Text className={`text-lg font-medium text-center ${isCompleted ? 'text-gray-900' : 'text-gray-900'}`}>{title}</Text>
                 {disabled && (
                     <Text className="text-xs text-muted-foreground uppercase">Coming soon</Text>
                 )}

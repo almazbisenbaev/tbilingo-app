@@ -259,7 +259,7 @@ export default function HomeScreen() {
 
   if (!currentUser) {
     return (
-      <SafeAreaView style={{ flex: 1 }} className="bg-background">
+      <SafeAreaView style={{ flex: 1 }} className="">
         <KeyboardAvoidingView 
           behavior={Platform.OS === "ios" ? "padding" : "height"}
           className="flex-1 justify-center"
@@ -357,7 +357,7 @@ export default function HomeScreen() {
 
   if (globalLoading) {
     return (
-      <SafeAreaView className="flex-1 bg-background items-center justify-center">
+      <SafeAreaView className="flex-1 items-center justify-center">
         <ActivityIndicator size="large" color="#F24822" />
         <Text className="text-muted-foreground mt-4">Loading your progress...</Text>
       </SafeAreaView>
@@ -365,7 +365,7 @@ export default function HomeScreen() {
   }
 
   return (
-    <SafeAreaView className="flex-1 bg-background" edges={['top']}>
+    <SafeAreaView className="flex-1" edges={['top']}>
       <ScrollView className="flex-1" contentContainerStyle={{ paddingBottom: 20 }}>
         <View className="w-full max-w-[640px] self-center px-4 py-8">
         <View className="items-center mb-12 mt-4">
