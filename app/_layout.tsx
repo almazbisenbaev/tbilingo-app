@@ -32,7 +32,7 @@ export default function RootLayout() {
       <ThemeProvider value={CustomDefaultTheme}>
         <Head>
           <link rel="manifest" href="/manifest.json" />
-          <meta name="theme-color" content={Colors.tint} />
+          <meta name="theme-color" content="#FFFFFF" />
           <link rel="icon" href="/favicon.ico" />
         </Head>
         <Stack screenOptions={{ header: (props) => <AppHeader {...props} /> }}>
