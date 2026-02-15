@@ -63,8 +63,8 @@ export default function CustomTabBar({ state, descriptors, navigation }: BottomT
 
         {state.routes.map((route, index) => {
           const { options } = descriptors[route.key];
-          const label =
-            options.tabBarLabel ?? options.title ?? (route.name.charAt(0).toUpperCase() + route.name.slice(1));
+          const labelOption = options.tabBarLabel ?? options.title ?? (route.name.charAt(0).toUpperCase() + route.name.slice(1));
+          const label = typeof labelOption === 'string' ? labelOption : route.name;
           const isFocused = state.index === index;
           const activeTint = options.tabBarActiveTintColor ?? Colors.tint;
           const inactiveTint = options.tabBarInactiveTintColor ?? '#AB9C94';
@@ -110,7 +110,6 @@ export default function CustomTabBar({ state, descriptors, navigation }: BottomT
               accessibilityRole="button"
               accessibilityState={isFocused ? { selected: true } : {}}
               accessibilityLabel={options.tabBarAccessibilityLabel}
-              testID={options.tabBarTestID}
               onPress={onPress}
               onLongPress={onLongPress}
               style={[styles.tabButton, { width: tabWidth, marginRight: index === tabCount - 1 ? 0 : TAB_GAP }]}
@@ -145,9 +144,13 @@ export default function CustomTabBar({ state, descriptors, navigation }: BottomT
 
 const styles = StyleSheet.create({
   wrapper: {
+    position: 'fixed',
+    bottom: 0,
+    left: 0,
+    right: 0,
     paddingHorizontal: 6,
     paddingTop: 4,
-    backgroundColor: '#ff000055',
+    backgroundColor: 'transparent',
   },
   bar: {
     flexDirection: 'row',
