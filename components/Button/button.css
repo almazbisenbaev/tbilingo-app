@@ -7,15 +7,13 @@
   border-color: transparent;
   border-width: 1px;
   border-style: solid;
-  border-bottom-width: 3px;
   min-height: 0;
   transition: .1s;
   will-change: transform, border-bottom-width;
 }
 
 .btn--pressed {
-  border-bottom-width: 1px;
-  transform: translateY(1px);
+  transform: translateY(2px);
 }
 
 
@@ -37,30 +35,56 @@
 
 .btn--default {
   background-color: #FFFFFF;
-  border-bottom-color: #E2E8F0;
+  box-shadow: 0 3px 0 0 #E2E8F0;
+}
+
+.btn--default.btn--pressed {
+  box-shadow: 0 1px 0 0 #E2E8F0;
 }
 
 .btn--primary {
   background-color: #F97316;
-  border-bottom-color: #e36912;
+  box-shadow: 0 3px 0 0 #e36912;
+}
+
+.btn--primary.btn--pressed {
+  box-shadow: 0 1px 0 0 #e36912;
 }
 
 .btn--secondary {
   background-color: #9A6C58;
-  border-bottom-color: #9A6C58;
+  box-shadow: 0 3px 0 0 #9A6C58;
+}
+
+.btn--secondary.btn--pressed {
+  box-shadow: 0 1px 0 0 #9A6C58;
 }
 
 .btn--black {
   background-color: #1F2937;
-  border-bottom-color: #1F2937;
+  box-shadow: 0 3px 0 0 #1F2937;
+}
+
+.btn--black.btn--pressed {
+  box-shadow: 0 1px 0 0 #1F2937;
 }
 .btn--success {
   background-color: #22C55E;
-  border-color: #22C55E;
+  border-color: transparent;
+  box-shadow: 0 3px 0 0 #22C55E;
+}
+
+.btn--success.btn--pressed {
+  box-shadow: 0 1px 0 0 #22C55E;
 }
 .btn--outline-success {
   background-color: #FFFFFF;
   border-color: #22C55E;
+  box-shadow: 0 3px 0 0 #22C55E;
+}
+
+.btn--outline-success.btn--pressed {
+  box-shadow: 0 1px 0 0 #22C55E;
 }
 
 .btn--disabled {

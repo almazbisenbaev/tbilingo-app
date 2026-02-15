@@ -158,11 +158,11 @@ const FlashcardPhrase: React.FC<FlashcardPhraseProps> = ({
         )}
 
         {/* Construction Area (Answer Box) */}
-        <View className="mb-6 w-full">
-            <Text className="text-muted-foreground text-xs mb-3 font-bold uppercase tracking-wider ml-1">Your answer:</Text>
-            <View className="min-h-[120px] bg-muted rounded-2xl p-4 border-2 border-border flex-row flex-wrap gap-3 items-start w-full">
+        <View className="mb-6 w-full bg-muted rounded-2xl p-4 border-2 border-border">
+            <Text className="text-muted-foreground text-xs mb-3 font-bold uppercase tracking-wider">Your answer:</Text>
+            <View className="min-h-[120px] flex-row flex-wrap gap-3 items-start w-full">
                 {selectedWords.length === 0 ? (
-                    <Text className="text-muted-foreground italic p-2 text-lg">Tap words below...</Text>
+                    <Text className="text-muted-foreground italic py-2 text-lg">Tap words below...</Text>
                 ) : (
                     selectedWords.map((wordObj) => (
                         <Button 
