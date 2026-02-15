@@ -44,7 +44,7 @@ export default function LevelLink({
                     size={100} 
                     strokeWidth={3}
                     color={isCompleted ? '#58CC0200' : '#F97316'}
-                    backgroundColor={isCompleted ? '#58CC0220' : '#E5E5E5'}
+                    backgroundColor={isCompleted ? '#58CC0200' : '#E5E5E5'}
                 >
                     <View className="items-center justify-center w-full h-full">
                         {isCompleted ? (

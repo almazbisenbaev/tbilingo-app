@@ -13,6 +13,7 @@ import { db } from '../../firebaseConfig';
 import { NumberItem } from '../../types';
 import { imageMap } from '../../utils/imageMap';
 import { shuffleArray } from '../../utils/shuffle-array';
+import CloseButton from '@/components/CloseButton';
 
 const COURSE_ID = 'numbers';
 const LEVEL_TITLE = 'Numbers';
@@ -270,13 +271,7 @@ export default function LevelNumbersScreen() {
         {/* Header with progress */}
         <View className="bg-card border-b border-border">
           <View className="flex-row items-center p-4 w-full max-w-[640px] self-center">
-            <Button 
-              onPress={() => setIsGameplayActive(false)} 
-              className="p-2 mr-5 min-h-0 h-auto w-auto bg-transparent border-0" 
-              variant="default"
-            >
-              <Ionicons name="close" size={24} color="#6b7280" />
-            </Button>
+            <CloseButton onPress={() => setIsGameplayActive(false)} />
             <View className="flex-1 h-2 bg-muted rounded-full overflow-hidden">
               <View 
                 className="h-full bg-primary rounded-full" 

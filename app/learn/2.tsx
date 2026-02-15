@@ -13,6 +13,7 @@ import { db } from '../../firebaseConfig';
 import { WordItem } from '../../types';
 import { imageMap } from '../../utils/imageMap';
 import { shuffleArray } from '../../utils/shuffle-array';
+import CloseButton from '@/components/CloseButton';
 
 const COURSE_ID = 'words-basic';
 const LEVEL_TITLE = 'Basic Words';
@@ -273,21 +274,15 @@ export default function LevelBasicWordsScreen() {
         {/* Header */}
         <View className="bg-card border-b border-border">
           <View className="flex-row items-center p-4 w-full max-w-[640px] self-center">
-          <Button 
-            onPress={() => setIsGameplayActive(false)} 
-            className="p-2 mr-5 min-h-0 h-auto w-auto bg-transparent border-0" 
-            variant="default"
-          >
-            <Ionicons name="close" size={24} color="#64748B" />
-          </Button>
-          <View className="flex-1 mx-2">
-            <ProgressBar 
-              current={currentIndex} 
-              total={sessionItems.length} 
-              height={8}
-            />
-          </View>
-          <View className="w-8" />
+            <CloseButton onPress={() => setIsGameplayActive(false)} />
+            <View className="flex-1 mx-2">
+              <ProgressBar 
+                current={currentIndex} 
+                total={sessionItems.length} 
+                height={8}
+              />
+            </View>
+            <View className="w-8" />
           </View>
         </View>
 

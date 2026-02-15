@@ -1,8 +1,7 @@
 import { Colors } from '@/constants/theme';
 import { Ionicons } from '@expo/vector-icons';
 import React from 'react';
-import { Text, View } from 'react-native';
-import Button from './Button';
+import { Text, View, Pressable } from 'react-native';
 
 type Props = {
   navigation: any;
@@ -12,18 +11,17 @@ type Props = {
 
 export default function AppHeader({ navigation, options, back }: Props) {
   return (
-    <View className="bg-background border-b border-border">
-      <View className="w-full max-w-[640px] self-center px-4 py-3 flex-row items-center gap-2">
+    <View className="bg-card border-b border-border">
+      <View className="flex-row items-center p-4 w-full max-w-[640px] self-center">
         {navigation.canGoBack() && (
-          <Button
+          <Pressable
             onPress={() => navigation.goBack()}
-            variant="default"
-            className="min-h-0 h-auto w-auto bg-transparent border-0 p-2"
+            className="p-2 mr-5 min-h-0 h-auto w-auto"
           >
             <Ionicons name="chevron-back" size={22} color={Colors.icon} />
-          </Button>
+          </Pressable>
         )}
-        <Text className="text-lg font-bold text-foreground" numberOfLines={1}>
+        <Text className="text-lg font-semibold text-foreground" numberOfLines={1}>
           {options.title ?? ''}
         </Text>
       </View>
