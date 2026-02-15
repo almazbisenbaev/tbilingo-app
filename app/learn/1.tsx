@@ -269,11 +269,11 @@ export default function LevelAlphabetScreen() {
         <Stack.Screen options={{ headerShown: false }} />
         
         {/* Header */}
-        <View className="bg-card border-b border-border pt-12">
+        <View className="bg-card border-b border-border">
           <View className="flex-row items-center p-4 w-full max-w-[640px] self-center">
           <Button 
             onPress={() => setIsGameplayActive(false)} 
-            className="p-2 mr-2 min-h-0 h-auto w-auto bg-transparent border-0" 
+            className="p-2 mr-5 min-h-0 h-auto w-auto bg-transparent border-0" 
             variant="default"
           >
             <Ionicons name="close" size={24} color="#64748B" />

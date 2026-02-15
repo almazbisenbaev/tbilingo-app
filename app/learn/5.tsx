@@ -337,11 +337,11 @@ export default function LevelGreetingsScreen() {
         <Stack.Screen options={{ headerShown: false }} />
         
         {/* Header with progress */}
-        <View className="bg-card border-b border-border pt-12">
+        <View className="bg-card border-b border-border">
           <View className="flex-row items-center p-4 w-full max-w-[640px] self-center">
             <Button 
               onPress={() => setIsGameplayActive(false)} 
-              className="p-2 mr-2 min-h-0 h-auto w-auto bg-transparent border-0" 
+              className="p-2 mr-5 min-h-0 h-auto w-auto bg-transparent border-0" 
               variant="default"
             >
               <Ionicons name="close" size={24} color="#6b7280" />
@@ -352,8 +352,8 @@ export default function LevelGreetingsScreen() {
                 style={{ width: `${((currentIndex) / sessionItems.length) * 100}%` }}
               />
             </View>
-            <Text className="ml-3 font-bold text-primary">
-              {currentIndex + 1}/{sessionItems.length}
+            <Text className="ml-5 font-semibold">
+              {currentIndex + 1} / {sessionItems.length}
             </Text>
           </View>
         </View>

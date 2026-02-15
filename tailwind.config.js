@@ -34,7 +34,7 @@ module.exports = {
         },
         success: '#58CC02', // Green (Keep for positive)
         warning: '#FFC800', // Yellow
-        border: '#E5E5E5',
+        border: '#F3F4F6',
         muted: {
           DEFAULT: '#F3F4F6',
           foreground: '#AFAFAF',
