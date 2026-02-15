@@ -60,7 +60,7 @@ export default function SettingsScreen() {
       <View className="flex-1 p-6 w-full max-w-[640px] self-center">
         <Text className="text-3xl font-bold mb-8 text-foreground">Settings</Text>
         
-        <View className="mb-8 bg-card p-4 rounded-2xl border-2 border-b-4 border-border">
+        <View className="mb-8 bg-card p-4 rounded-2xl border-2 border-border">
           <Text className="text-muted-foreground mb-1 text-sm uppercase tracking-wider">Signed in as</Text>
           <Text className="text-xl font-semibold text-foreground">{currentUser.email}</Text>
         </View>

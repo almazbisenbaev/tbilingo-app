@@ -48,7 +48,7 @@ const FlashcardWord: React.FC<FlashcardWordProps> = ({ word, onNext, onLearned }
 
   if (!showAnswer) {
     return (
-      <View className="flex-1 justify-center items-center p-8 bg-card rounded-3xl border-2 border-b-4 border-border mx-2 my-4">
+      <View className="flex-1 justify-center items-center p-8 bg-card rounded-3xl border-2 border-border mx-2 my-4">
         <Text className="text-4xl font-bold mb-12 text-center text-foreground leading-tight">{word.english}</Text>
         <Button 
           variant="primary"
@@ -62,7 +62,7 @@ const FlashcardWord: React.FC<FlashcardWordProps> = ({ word, onNext, onLearned }
   }
 
   return (
-    <View className="flex-1 justify-center items-center p-8 bg-card rounded-3xl border-2 border-b-4 border-border mx-2 my-4">
+    <View className="flex-1 justify-center items-center p-8 bg-card rounded-3xl border-2 border-border mx-2 my-4">
       <Text className="text-2xl font-medium mb-4 text-muted-foreground">{word.english}</Text>
       <Text className="text-5xl font-bold mb-8 text-center text-foreground">{word.georgian}</Text>
       

@@ -54,7 +54,7 @@ const FlashcardNumber: React.FC<FlashcardNumberProps> = ({ number, onNext, onLea
   };
 
   return (
-    <View className="flex-1 w-full max-w-md mx-auto p-6 bg-card rounded-3xl border-2 border-b-4 border-border justify-center my-4">
+    <View className="flex-1 w-full max-w-md mx-auto p-6 bg-card rounded-3xl border-2 border-border justify-center my-4">
       <View className="items-center justify-center w-full">
         {!showAnswer ? (
           // Front Side

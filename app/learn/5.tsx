@@ -396,7 +396,7 @@ export default function LevelGreetingsScreen() {
           <Text className="text-muted-foreground text-center">{LEVEL_DESCRIPTION}</Text>
         </View>
 
-        <View className="bg-card p-6 rounded-2xl border-2 border-b-4 border-border mb-8">
+        <View className="bg-card p-6 rounded-2xl border-2 border-border mb-8">
           <View className="flex-row justify-between items-end mb-2">
             <Text className="text-sm font-medium text-muted-foreground">Course Progress</Text>
             <Text className="text-2xl font-bold text-primary">{progressPercent}%</Text>

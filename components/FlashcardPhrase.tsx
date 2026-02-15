@@ -123,7 +123,7 @@ const FlashcardPhrase: React.FC<FlashcardPhraseProps> = ({
   };
 
   return (
-    <View className="flex-1 w-full bg-card rounded-3xl p-6 border-2 border-b-4 border-border mx-2 my-4">
+    <View className="flex-1 w-full bg-card rounded-3xl p-6 border-2 border-border mx-2 my-4">
         {/* Memory Dots */}
         <View className="flex-row items-center mb-6 justify-between bg-muted p-3 rounded-xl border border-border">
             <View className="flex-row gap-2">

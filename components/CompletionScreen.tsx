@@ -25,7 +25,7 @@ export default function CompletionScreen({
             <Text className="text-2xl font-bold text-foreground mb-2">Great work!</Text>
             <Text className="text-lg text-muted-foreground text-center mb-6">You completed this session!</Text>
             
-            <View className="bg-card p-6 rounded-2xl border-2 border-b-4 border-border w-full mb-6">
+            <View className="bg-card p-6 rounded-2xl border-2 border-border w-full mb-6">
                 <Text className="text-lg mb-2 text-foreground">
                     Session progress: <Text className="font-bold text-primary">{sessionLearnedCount}</Text> items mastered
                 </Text>
