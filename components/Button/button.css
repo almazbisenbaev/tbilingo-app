@@ -60,14 +60,20 @@
   box-shadow: 0 1px 0 0 #9A6C58;
 }
 
+
+
 .btn--black {
   background-color: #1F2937;
-  box-shadow: 0 3px 0 0 #1F2937;
+  box-shadow: 0 3px 0 0 #000;
 }
 
 .btn--black.btn--pressed {
-  box-shadow: 0 1px 0 0 #1F2937;
+  box-shadow: 0 1px 0 0 #000;
 }
+
+
+
+
 .btn--success {
   background-color: #22C55E;
   border-color: transparent;

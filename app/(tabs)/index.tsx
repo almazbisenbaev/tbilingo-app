@@ -280,7 +280,7 @@ export default function HomeScreen() {
             <View>
               <Text className="text-muted-foreground mb-1 ml-1">Email</Text>
               <TextInput
-                className="w-full bg-muted border border-border rounded-xl p-4 text-base text-foreground"
+                className="w-full bg-white border border-border rounded-xl p-4 text-lg font-medium text-foreground outline-none"
                 placeholder="hello@example.com"
                 value={email}
                 onChangeText={setEmail}
@@ -293,7 +293,7 @@ export default function HomeScreen() {
             <View className="mt-4">
               <Text className="text-muted-foreground mb-1 ml-1">Password</Text>
               <TextInput
-                className="w-full bg-muted border border-border rounded-xl p-4 text-base text-foreground"
+                className="w-full bg-white border border-border rounded-xl p-4 text-lg font-medium text-foreground outline-none"
                 placeholder="••••••••"
                 value={password}
                 onChangeText={setPassword}
@@ -323,7 +323,7 @@ export default function HomeScreen() {
 
             {authMode === 'login' && (
               <Button
-                variant="secondary"
+                variant="black"
                 size="lg"
                 title="Continue with Google"
                 onPress={handleGoogleLogin}
