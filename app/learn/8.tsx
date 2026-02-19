@@ -16,8 +16,8 @@ import { imageMap } from '../../utils/imageMap';
 import { shuffleArray } from '../../utils/shuffle-array';
 import CloseButton from '@/components/CloseButton';
 
-const COURSE_ID = 'family-friends';
-const LEVEL_TITLE = 'Family & Friends';
+const COURSE_ID = 'family-friends-2';
+const LEVEL_TITLE = 'Family & Friends 2';
 const LEVEL_DESCRIPTION = 'Learn essential Georgian phrases about family and friends';
 const LEVEL_ICON = '/images/icon-phrases.svg';
 
