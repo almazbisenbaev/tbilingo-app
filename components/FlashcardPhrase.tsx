@@ -3,7 +3,7 @@ import { audioMap } from '@/utils/audioMap';
 import { Ionicons } from '@expo/vector-icons';
 import { setAudioModeAsync, useAudioPlayer, useAudioPlayerStatus } from 'expo-audio';
 import React, { useEffect, useState } from 'react';
-import { ActivityIndicator, Text, View } from 'react-native';
+import { ActivityIndicator, Image, Text, View } from 'react-native';
 import { Colors } from '@/constants/theme';
 import { PhraseItem, PhraseMemory } from '../types';
 import { normalizeForComparison, processGeorgianSentence, removePunctuation } from '../utils/georgian-text-utils';
@@ -22,6 +22,13 @@ interface WordObj {
   word: string;
   disabled: boolean;
 }
+
+const flowerImages = {
+  0: require('../public/images/flower-0.png'),
+  1: require('../public/images/flower-1.png'),
+  2: require('../public/images/flower-2.png'),
+  3: require('../public/images/flower-3.png'),
+};
 
 const FlashcardPhrase: React.FC<FlashcardPhraseProps> = ({ 
   phrase, 
@@ -124,18 +131,23 @@ const FlashcardPhrase: React.FC<FlashcardPhraseProps> = ({
 
   return (
     <View className="flex-1 w-full bg-card rounded-3xl p-6 border-2 border-border mx-2 my-4">
-        {/* Memory Dots */}
-        <View className="flex-row items-center mb-6 justify-between bg-muted p-3 rounded-xl border border-border">
-            <View className="flex-row gap-2">
-                {[...Array(3)].map((_, i) => (
-                    <View 
-                        key={i} 
-                        className={`w-4 h-4 rounded-full ${i < memory.correctAnswers ? 'bg-success' : 'bg-muted-foreground/30'}`}
-                    />
-                ))}
-            </View>
-            <Text className="text-muted-foreground text-sm font-semibold">{memory.correctAnswers}/3 mastery</Text>
+        {/* Mastery Flower */}
+        <View className='flex justify-end'>
+          <Image
+            source={flowerImages[Math.min(memory.correctAnswers, 3) as 0 | 1 | 2 | 3]}
+            style={{ width: 60, height: 60 }}
+            resizeMode="contain"
+            className='ml-auto'
+          />
         </View>
+        {/* <View className="flex-row items-center mb-6 justify-between bg-muted p-3 rounded-xl border border-border">
+            <Image
+                source={flowerImages[Math.min(memory.correctAnswers, 3) as 0 | 1 | 2 | 3]}
+                style={{ width: 40, height: 40 }}
+                resizeMode="contain"
+            />
+            <Text className="text-muted-foreground text-sm font-semibold">{memory.correctAnswers}/3 mastery</Text>
+        </View> */}
 
         <View className="mb-6 flex-1 justify-center">
             <Text className="text-3xl font-bold text-foreground leading-tight text-center">{phrase.english}</Text>
