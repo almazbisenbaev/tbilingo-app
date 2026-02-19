@@ -15,15 +15,15 @@ import { WordItem } from '../../types';
 import { imageMap } from '../../utils/imageMap';
 import { shuffleArray } from '../../utils/shuffle-array';
 import CloseButton from '@/components/CloseButton';
+import { useLevelMeta } from '@/hooks/useLevelMeta';
 
 const COURSE_ID = 'words-basic';
-const LEVEL_TITLE = 'Basic Words';
-const LEVEL_DESCRIPTION = 'Essential vocabulary for daily use';
 const LEVEL_ICON = '/images/icon-phrases.svg';
 
 export default function LevelBasicWordsScreen() {
   const router = useRouter();
   const { currentUser } = useAuth();
+  const { title: LEVEL_TITLE, description: LEVEL_DESCRIPTION } = useLevelMeta(COURSE_ID);
   
   // State
   const [items, setItems] = useState<WordItem[]>([]);

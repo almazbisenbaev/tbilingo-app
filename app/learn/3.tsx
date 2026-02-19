@@ -15,15 +15,15 @@ import { PhraseItem, PhraseMemory } from '../../types';
 import { imageMap } from '../../utils/imageMap';
 import { shuffleArray } from '../../utils/shuffle-array';
 import CloseButton from '@/components/CloseButton';
+import { useLevelMeta } from '@/hooks/useLevelMeta';
 
 const COURSE_ID = 'phrases-essential';
-const LEVEL_TITLE = 'Essential Phrases';
-const LEVEL_DESCRIPTION = 'Advanced Georgian phrases with sentence construction gameplay';
-const LEVEL_ICON = '/images/icon-phrases.svg'; // Note: In Expo we might need a local map or remote URL if this is a path
+const LEVEL_ICON = '/images/icon-phrases.svg';
 
 export default function LevelEssentialPhrasesScreen() {
   const router = useRouter();
   const { currentUser } = useAuth();
+  const { title: LEVEL_TITLE, description: LEVEL_DESCRIPTION } = useLevelMeta(COURSE_ID);
   
   // State
   const [items, setItems] = useState<PhraseItem[]>([]);

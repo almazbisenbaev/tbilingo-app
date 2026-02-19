@@ -17,10 +17,10 @@ import { shuffleArray } from '../../utils/shuffle-array';
 import CloseButton from '@/components/CloseButton';
 import { useLevelMeta } from '@/hooks/useLevelMeta';
 
-const COURSE_ID = 'pronouns-2';
+const COURSE_ID = 'family-friends-2';
 const LEVEL_ICON = '/images/icon-phrases.svg';
 
-export default function LevelPronouns2Screen() {
+export default function LevelFamilyFriendsScreen() {
   const router = useRouter();
   const { currentUser } = useAuth();
   const { title: LEVEL_TITLE, description: LEVEL_DESCRIPTION } = useLevelMeta(COURSE_ID);
@@ -329,6 +329,7 @@ export default function LevelPronouns2Screen() {
       <View className="flex-1 bg-background">
         <Stack.Screen options={{ headerShown: false }} />
         
+        {/* Header */}
         <View className="bg-card border-b border-border">
           <View className="flex-row items-center p-4 w-full max-w-[640px] self-center">
             <CloseButton onPress={() => setIsGameplayActive(false)} />

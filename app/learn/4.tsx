@@ -15,15 +15,15 @@ import { NumberItem } from '../../types';
 import { imageMap } from '../../utils/imageMap';
 import { shuffleArray } from '../../utils/shuffle-array';
 import CloseButton from '@/components/CloseButton';
+import { useLevelMeta } from '@/hooks/useLevelMeta';
 
 const COURSE_ID = 'numbers';
-const LEVEL_TITLE = 'Numbers';
-const LEVEL_DESCRIPTION = 'Learn to count in Georgian';
 const LEVEL_ICON = '/images/icon-numbers.svg';
 
 export default function LevelNumbersScreen() {
   const router = useRouter();
   const { currentUser } = useAuth();
+  const { title: LEVEL_TITLE, description: LEVEL_DESCRIPTION } = useLevelMeta(COURSE_ID);
   
   // State
   const [items, setItems] = useState<NumberItem[]>([]);

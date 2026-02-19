@@ -15,15 +15,15 @@ import { WordItem } from '../../types';
 import { imageMap } from '../../utils/imageMap';
 import { shuffleArray } from '../../utils/shuffle-array';
 import CloseButton from '@/components/CloseButton';
+import { useLevelMeta } from '@/hooks/useLevelMeta';
 
 const COURSE_ID = 'pronouns';
-const LEVEL_TITLE = 'Pronouns';
-const LEVEL_DESCRIPTION = 'Learn Georgian pronouns';
 const LEVEL_ICON = '/images/icon-phrases.svg';
 
 export default function LevelPronounsScreen() {
   const router = useRouter();
   const { currentUser } = useAuth();
+  const { title: LEVEL_TITLE, description: LEVEL_DESCRIPTION } = useLevelMeta(COURSE_ID);
   
   // State
   const [items, setItems] = useState<WordItem[]>([]);

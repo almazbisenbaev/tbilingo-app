@@ -15,15 +15,15 @@ import { db } from '../../firebaseConfig';
 import { AlphabetItem } from '../../types';
 import { imageMap } from '../../utils/imageMap';
 import { shuffleArray } from '../../utils/shuffle-array';
+import { useLevelMeta } from '@/hooks/useLevelMeta';
 
 const COURSE_ID = 'alphabet';
-const LEVEL_TITLE = 'Alphabet';
-const LEVEL_DESCRIPTION = 'Master the Georgian script';
 const LEVEL_ICON = '/images/icon-alphabet.svg';
 
 export default function LevelAlphabetScreen() {
   const router = useRouter();
   const { currentUser } = useAuth();
+  const { title: LEVEL_TITLE, description: LEVEL_DESCRIPTION } = useLevelMeta(COURSE_ID);
   
   // State
   const [items, setItems] = useState<AlphabetItem[]>([]);

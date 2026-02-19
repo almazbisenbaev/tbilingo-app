@@ -74,11 +74,20 @@ export const LEVELS: LevelConfig[] = [
   },
   { 
     id: '8', 
-    courseId: 'family-friends-2', 
-    title: "Family & Friends 2", 
+    courseId: 'family-friends', 
+    title: "Family & Friends", 
     icon: '/images/icon-phrases.svg', 
     requiredLevelId: '7', 
     requiredLevelTitle: 'Learn Pronouns 2', 
+    type: 'phrases' 
+  },
+  { 
+    id: '9', 
+    courseId: 'family-friends-2', 
+    title: "Family & Friends 2", 
+    icon: '/images/icon-phrases.svg', 
+    requiredLevelId: '8', 
+    requiredLevelTitle: 'Learn Family & Friends', 
     type: 'phrases' 
   },
 ];
