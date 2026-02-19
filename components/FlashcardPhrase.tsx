@@ -4,7 +4,18 @@ import { Ionicons } from '@expo/vector-icons';
 import { setAudioModeAsync, useAudioPlayer, useAudioPlayerStatus } from 'expo-audio';
 import React, { useEffect, useRef, useState } from 'react';
 import { ActivityIndicator, Dimensions, Image, Modal, Pressable, Text, View } from 'react-native';
-import Animated, { FadeIn, ZoomIn } from 'react-native-reanimated';
+import Animated, {
+  Easing,
+  FadeIn,
+  SharedValue,
+  SlideInDown,
+  ZoomIn,
+  runOnJS,
+  useAnimatedStyle,
+  useSharedValue,
+  withSequence,
+  withTiming,
+} from 'react-native-reanimated';
 import { Colors } from '@/constants/theme';
 import { PhraseItem, PhraseMemory } from '../types';
 import { normalizeForComparison, processGeorgianSentence, removePunctuation } from '../utils/georgian-text-utils';
@@ -23,6 +34,45 @@ interface WordObj {
   word: string;
   disabled: boolean;
 }
+
+const SPARK_COLORS = ['#F97316', '#FFC800', '#58CC02', '#0EA5E9', '#EC4899', '#A855F7', '#F97316', '#FFC800'];
+const SPARK_ANGLES = Array.from({ length: 8 }, (_, i) => (i * Math.PI * 2) / 8);
+
+const SparkParticle = ({
+  angle,
+  color,
+  progress,
+}: {
+  angle: number;
+  color: string;
+  progress: SharedValue<number>;
+}) => {
+  const dist = 52;
+  const tx = Math.cos(angle) * dist;
+  const ty = Math.sin(angle) * dist;
+  const style = useAnimatedStyle(() => {
+    const p = progress.value;
+    return {
+      opacity: p > 0 ? Math.max(0, 1 - p * 1.8) : 0,
+      transform: [
+        { translateX: tx * p },
+        { translateY: ty * p },
+        { scale: Math.max(0, 1 - p * 0.6) },
+      ],
+    };
+  });
+  return (
+    <Animated.View
+      style={[{
+        position: 'absolute',
+        width: 9,
+        height: 9,
+        borderRadius: 5,
+        backgroundColor: color,
+      }, style]}
+    />
+  );
+};
 
 const flowerImages = {
   0: require('../public/images/flower-0.png'),
@@ -45,6 +95,32 @@ const FlashcardPhrase: React.FC<FlashcardPhraseProps> = ({
   const [showTooltip, setShowTooltip] = useState(false);
   const [tooltipPos, setTooltipPos] = useState({ x: 0, y: 0 });
   const flowerRef = useRef<View>(null);
+
+  // Flower level-up animations
+  const [displayedLevel, setDisplayedLevel] = useState(memory.correctAnswers);
+  const prevCorrectAnswers = useRef(memory.correctAnswers);
+  const sparkProgress = useSharedValue(0);
+  const flowerOpacity = useSharedValue(1);
+  const flowerAnimStyle = useAnimatedStyle(() => ({
+    opacity: flowerOpacity.value,
+  }));
+
+  useEffect(() => {
+    if (memory.correctAnswers > prevCorrectAnswers.current) {
+      // Crossfade to new flower image
+      flowerOpacity.value = withSequence(
+        withTiming(0, { duration: 120 }, (finished) => {
+          'worklet';
+          if (finished) runOnJS(setDisplayedLevel)(memory.correctAnswers);
+        }),
+        withTiming(1, { duration: 220 }),
+      );
+      // Sparks burst
+      sparkProgress.value = 0;
+      sparkProgress.value = withTiming(1, { duration: 650, easing: Easing.out(Easing.cubic) });
+    }
+    prevCorrectAnswers.current = memory.correctAnswers;
+  }, [memory.correctAnswers]);
   const audioSource = phrase.audioUrl ? (audioMap[phrase.audioUrl] || phrase.audioUrl) : null;
   const player = useAudioPlayer(audioSource);
   const status = useAudioPlayerStatus(player);
@@ -151,11 +227,23 @@ const FlashcardPhrase: React.FC<FlashcardPhraseProps> = ({
               }
             }}
           >
-            <Image
-              source={flowerImages[Math.min(memory.correctAnswers, 3) as 0 | 1 | 2 | 3]}
-              style={{ width: 60, height: 60 }}
-              resizeMode="contain"
-            />
+            <View style={{ width: 60, height: 60, alignItems: 'center', justifyContent: 'center' }}>
+              {SPARK_ANGLES.map((angle, i) => (
+                <SparkParticle
+                  key={i}
+                  angle={angle}
+                  color={SPARK_COLORS[i % SPARK_COLORS.length]}
+                  progress={sparkProgress}
+                />
+              ))}
+              <Animated.View style={flowerAnimStyle}>
+                <Image
+                  source={flowerImages[Math.min(displayedLevel, 3) as 0 | 1 | 2 | 3]}
+                  style={{ width: 60, height: 60 }}
+                  resizeMode="contain"
+                />
+              </Animated.View>
+            </View>
           </Pressable>
 
           <Modal
@@ -285,35 +373,56 @@ const FlashcardPhrase: React.FC<FlashcardPhraseProps> = ({
             )}
         </View>
 
-        {/* Result Overlay */}
+        {/* Result Bottom Sheet */}
         {isSubmitted && (
-            <View className="absolute inset-0 rounded-3xl p-6 z-10 justify-center items-center bg-card/95 backdrop-blur-sm">
-                <View className="items-center w-full max-w-xs">
-                    <Text className="text-7xl mb-6">{isCorrect ? '🎉' : '❌'}</Text>
-                    <Text className={`text-3xl font-bold mb-4 ${isCorrect ? 'text-success' : 'text-destructive'}`}>
+            <Animated.View
+                entering={SlideInDown.duration(300).springify().damping(18)}
+                style={{
+                    position: 'absolute',
+                    bottom: 12,
+                    left: 12,
+                    right: 12,
+                    zIndex: 20,
+                    borderRadius: 20,
+                    paddingHorizontal: 20,
+                    paddingTop: 20,
+                    paddingBottom: 20,
+                    backgroundColor: isCorrect ? '#f0fdf4' : '#fff1f1',
+                    borderWidth: 1.5,
+                    borderColor: isCorrect ? '#86efac' : '#fca5a5',
+                    shadowColor: '#000',
+                    shadowOffset: { width: 0, height: 8 },
+                    shadowOpacity: 0.18,
+                    shadowRadius: 20,
+                    elevation: 16,
+                }}
+            >
+                <View className="flex-row items-center mb-3">
+                    <Text className="text-3xl mr-3">{isCorrect ? '🎉' : '❌'}</Text>
+                    <Text className={`text-2xl font-bold ${isCorrect ? 'text-success' : 'text-destructive'}`}>
                         {isCorrect ? 'Correct!' : 'Incorrect'}
                     </Text>
-                    
-                    {!isCorrect && (
-                        <View className="mb-8 items-center bg-destructive/10 p-6 rounded-2xl w-full border border-destructive/20">
-                            <Text className="text-muted-foreground mb-2 font-semibold uppercase tracking-wide text-xs">Correct answer</Text>
-                            <Text className="text-xl font-bold text-center text-foreground leading-snug">{phrase.georgian}</Text>
-                        </View>
-                    )}
-
-                    {phrase.latin && (
-                        <Text className="text-muted-foreground mb-8 italic text-lg">{phrase.latin}</Text>
-                    )}
-                    
-                    <Button 
-                        variant={isCorrect ? "success" : "primary"}
-                        size="lg"
-                        title="Continue"
-                        onPress={onNext}
-                        className="w-full"
-                    />
                 </View>
-            </View>
+
+                {!isCorrect && (
+                    <View className="mb-4 bg-destructive/10 px-4 py-3 rounded-xl border border-destructive/20">
+                        <Text className="text-muted-foreground mb-1 font-semibold uppercase tracking-wide text-xs">Correct answer</Text>
+                        <Text className="text-base font-bold text-foreground leading-snug">{phrase.georgian}</Text>
+                    </View>
+                )}
+
+                {phrase.latin && (
+                    <Text className="text-muted-foreground mb-4 italic text-base">{phrase.latin}</Text>
+                )}
+
+                <Button
+                    variant={isCorrect ? 'success' : 'primary'}
+                    size="lg"
+                    title="Continue"
+                    onPress={onNext}
+                    className="w-full"
+                />
+            </Animated.View>
         )}
     </View>
   );
