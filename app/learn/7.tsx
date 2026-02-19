@@ -5,6 +5,7 @@ import { Stack, useRouter } from 'expo-router';
 import { collection, doc, getDoc, getDocs, query, serverTimestamp, setDoc } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, Alert, ScrollView, Text, View } from 'react-native';
+import CardTransition from '../../components/CardTransition';
 import CompletionScreen from '../../components/CompletionScreen';
 import FlashcardPhrase from '../../components/FlashcardPhrase';
 import ProgressBar from '../../components/ProgressBar';
@@ -343,7 +344,7 @@ export default function LevelPronouns2Screen() {
           </View>
         </View>
 
-        <View className="flex-1 p-6 justify-center w-full max-w-[640px] self-center">
+        <CardTransition key={currentIndex} className="flex-1 p-6 justify-center w-full max-w-[640px] self-center">
            <FlashcardPhrase
               phrase={currentItem}
               memory={phrasesMemory[currentItem.id] || { correctAnswers: 0, isLearned: false }}
@@ -351,7 +352,7 @@ export default function LevelPronouns2Screen() {
               onCorrectAnswer={handlePhraseCorrect}
               onWrongAnswer={handlePhraseWrong}
             />
-        </View>
+        </CardTransition>
       </View>
     );
   }

@@ -5,6 +5,7 @@ import { Stack, useRouter } from 'expo-router';
 import { collection, doc, getDoc, getDocs, query, serverTimestamp, setDoc } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, Alert, Platform, ScrollView, Text, View } from 'react-native';
+import CardTransition from '../../components/CardTransition';
 import CompletionScreen from '../../components/CompletionScreen';
 import FlashcardNumber from '../../components/FlashcardNumber';
 import ProgressBar from '../../components/ProgressBar';
@@ -284,13 +285,13 @@ export default function LevelNumbersScreen() {
           </View>
         </View>
 
-        <View className="flex-1 justify-center items-center p-4 bg-background">
+        <CardTransition key={currentIndex} className="flex-1 justify-center items-center p-4 bg-background">
            <FlashcardNumber
               number={currentItem}
               onNext={handleNext}
               onLearned={handleLearned}
             />
-        </View>
+        </CardTransition>
       </View>
     );
   }

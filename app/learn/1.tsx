@@ -6,6 +6,7 @@ import { Stack, useRouter } from 'expo-router';
 import { collection, doc, getDoc, getDocs, query, serverTimestamp, setDoc } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, Alert, Platform, ScrollView, Text, View } from 'react-native';
+import CardTransition from '../../components/CardTransition';
 import CompletionScreen from '../../components/CompletionScreen';
 import FlashcardLetter from '../../components/FlashcardLetter';
 import ProgressBar from '../../components/ProgressBar';
@@ -285,13 +286,13 @@ export default function LevelAlphabetScreen() {
         </View>
 
         {/* Card Area */}
-        <View className="flex-1 p-6 justify-center w-full max-w-[640px] self-center">
+        <CardTransition key={currentIndex} className="flex-1 p-6 justify-center w-full max-w-[640px] self-center">
             <FlashcardLetter 
                 letter={currentItem}
                 onNext={handleNext}
                 onLearned={handleLearned}
             />
-        </View>
+        </CardTransition>
       </View>
     );
     }
