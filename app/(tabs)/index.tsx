@@ -10,7 +10,7 @@ import { Image } from 'expo-image';
 import { GoogleAuthProvider, signInWithCredential, signInWithPopup, signInWithRedirect } from 'firebase/auth';
 import { collection, doc, getDoc, getDocs, onSnapshot, query } from 'firebase/firestore';
 import React, { useCallback, useEffect, useState } from 'react';
-import { ActivityIndicator, Alert, KeyboardAvoidingView, Platform, ScrollView, Text, TextInput, View } from 'react-native';
+import { ActivityIndicator, Alert, KeyboardAvoidingView, Platform, Pressable, ScrollView, Text, TextInput, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useFocusEffect } from '@react-navigation/native';
 
@@ -272,11 +272,36 @@ export default function HomeScreen() {
                 contentFit="contain" 
             />
             <Text className="text-xl font-bold mt-4 text-foreground">
-              {authMode === 'login' ? 'Welcome Back!' : 'Create Account'}
+              {authMode === 'login' ? 'An easy way to learn Georgian Language' : 'Create Account'}
             </Text>
           </View>
 
           <View className="space-y-4">
+            {authMode === 'login' && (
+              <>
+                <Button
+                  variant="black"
+                  size="lg"
+                  onPress={handleGoogleLogin}
+                  loading={googleLoading}
+                  className="w-full flex-row items-center justify-center gap-3"
+                >
+                  <Image
+                    source={imageMap['/images/icon-google.svg']}
+                    style={{ width: 22, height: 22 }}
+                    contentFit="contain"
+                  />
+                  <Text className="btn__text btn__text--black btn__text--lg">Continue with Google</Text>
+                </Button>
+
+                <View className="flex-row items-center my-2">
+                  <View className="flex-1 h-px bg-border" />
+                  <Text className="mx-4 text-muted-foreground">or</Text>
+                  <View className="flex-1 h-px bg-border" />
+                </View>
+              </>
+            )}
+
             <View>
               <Text className="text-muted-foreground mb-1 ml-1">Email</Text>
               <TextInput
@@ -303,13 +328,9 @@ export default function HomeScreen() {
             </View>
 
             {authMode === 'login' && (
-              <Button 
-                onPress={handleForgotPassword} 
-                className="mt-2 items-end min-h-0 h-auto bg-transparent border-0 p-0"
-                variant="default"
-              >
+              <Pressable onPress={handleForgotPassword} className="mt-2 self-end">
                 <Text className="text-primary font-semibold">Forgot Password?</Text>
-              </Button>
+              </Pressable>
             )}
 
             <Button
@@ -321,33 +342,19 @@ export default function HomeScreen() {
               className="mt-6 w-full"
             />
 
-            {authMode === 'login' && (
-              <Button
-                variant="black"
-                size="lg"
-                title="Continue with Google"
-                onPress={handleGoogleLogin}
-                loading={googleLoading}
-                className="mt-4 w-full"
-              />
-            )}
-
  
 
-            <View className="flex-row justify-center mt-6">
-              <Text className="text-muted-foreground">
+            <View className="flex-row justify-center mt-10 pt-10 border-t border-1 border-gray-300">
+              <Text className="text-lg">
                 {authMode === 'login' ? "Don't have an account? " : "Already have an account? "}
               </Text>
-              <Button 
-                onPress={() => setAuthMode(authMode === 'login' ? 'signup' : 'login')}
-                className="min-h-0 h-auto bg-transparent border-0 p-0"
-                variant="default"
-              >
-                <Text className="text-primary font-bold">
+              <Pressable onPress={() => setAuthMode(authMode === 'login' ? 'signup' : 'login')}>
+                <Text className="text-primary font-bold text-lg">
                   {authMode === 'login' ? 'Sign Up' : 'Sign In'}
                 </Text>
-              </Button>
+              </Pressable>
             </View>
+
           </View>
           </View>
         </KeyboardAvoidingView>

@@ -5,5 +5,6 @@ export const imageMap: Record<string, any> = {
   '/images/icon-back.svg': require('../assets/images/icon-back.svg'),
   '/images/icon-close-black.svg': require('../assets/images/icon-close-black.svg'),
   '/images/icon-gear-black.svg': require('../assets/images/icon-gear-black.svg'),
+  '/images/icon-google.svg': require('../assets/images/icon-google.svg'),
   '/images/logo.svg': require('../assets/images/logo.svg'),
 };
