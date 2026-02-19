@@ -48,7 +48,7 @@ const FlashcardLetter: React.FC<FlashcardProps> = ({ letter, onNext, onLearned }
 
   if (!showAnswer) {
     return (
-      <View className="flex-1 justify-center items-center p-8 bg-card rounded-3xl border-2 border-border mx-2 my-4">
+      <View className="flex-1 justify-center items-center p-8 bg-card rounded-3xl border-2 border-border">
         <Text className="text-9xl font-bold mb-12 text-foreground tracking-wider">{letter.character}</Text>
         <Button 
           variant="primary"
@@ -62,7 +62,7 @@ const FlashcardLetter: React.FC<FlashcardProps> = ({ letter, onNext, onLearned }
   }
 
   return (
-    <View className="flex-1 justify-center items-center p-8 bg-card rounded-3xl border-2 border-border mx-2 my-4">
+    <View className="flex-1 justify-center items-center p-8 bg-card rounded-3xl border-2 border-border">
       <Text className="text-7xl font-bold mb-2 text-foreground">{letter.character}</Text>
       <Text className="text-3xl font-semibold mb-2 text-muted-foreground">{letter.name}</Text>
       <View className="flex-row items-center mb-8 bg-muted px-4 py-2 rounded-lg border-2 border-border">

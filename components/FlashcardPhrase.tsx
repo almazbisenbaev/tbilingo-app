@@ -2,8 +2,9 @@ import Button from '@/components/Button';
 import { audioMap } from '@/utils/audioMap';
 import { Ionicons } from '@expo/vector-icons';
 import { setAudioModeAsync, useAudioPlayer, useAudioPlayerStatus } from 'expo-audio';
-import React, { useEffect, useState } from 'react';
-import { ActivityIndicator, Image, Text, View } from 'react-native';
+import React, { useEffect, useRef, useState } from 'react';
+import { ActivityIndicator, Dimensions, Image, Modal, Pressable, Text, View } from 'react-native';
+import Animated, { FadeIn, ZoomIn } from 'react-native-reanimated';
 import { Colors } from '@/constants/theme';
 import { PhraseItem, PhraseMemory } from '../types';
 import { normalizeForComparison, processGeorgianSentence, removePunctuation } from '../utils/georgian-text-utils';
@@ -41,6 +42,9 @@ const FlashcardPhrase: React.FC<FlashcardPhraseProps> = ({
   const [selectedWords, setSelectedWords] = useState<WordObj[]>([]);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isCorrect, setIsCorrect] = useState(false);
+  const [showTooltip, setShowTooltip] = useState(false);
+  const [tooltipPos, setTooltipPos] = useState({ x: 0, y: 0 });
+  const flowerRef = useRef<View>(null);
   const audioSource = phrase.audioUrl ? (audioMap[phrase.audioUrl] || phrase.audioUrl) : null;
   const player = useAudioPlayer(audioSource);
   const status = useAudioPlayerStatus(player);
@@ -130,15 +134,75 @@ const FlashcardPhrase: React.FC<FlashcardPhraseProps> = ({
   };
 
   return (
-    <View className="flex-1 w-full bg-card rounded-3xl p-6 border-2 border-border mx-2 my-4">
+    <View className="flex-1 w-full bg-card rounded-3xl p-6 border-2 border-border">
+
         {/* Mastery Flower */}
-        <View className='flex justify-end'>
-          <Image
-            source={flowerImages[Math.min(memory.correctAnswers, 3) as 0 | 1 | 2 | 3]}
-            style={{ width: 60, height: 60 }}
-            resizeMode="contain"
-            className='ml-auto'
-          />
+        <View className='flex justify-center items-center'>
+          <Pressable
+            ref={flowerRef}
+            onPress={() => {
+              if (showTooltip) {
+                setShowTooltip(false);
+              } else {
+                flowerRef.current?.measureInWindow((x, y, width, height) => {
+                  setTooltipPos({ x, y });
+                  setShowTooltip(true);
+                });
+              }
+            }}
+          >
+            <Image
+              source={flowerImages[Math.min(memory.correctAnswers, 3) as 0 | 1 | 2 | 3]}
+              style={{ width: 60, height: 60 }}
+              resizeMode="contain"
+            />
+          </Pressable>
+
+          <Modal
+            visible={showTooltip}
+            transparent
+            animationType="none"
+            onRequestClose={() => setShowTooltip(false)}
+          >
+            <Pressable
+              style={{ flex: 1 }}
+              onPress={() => setShowTooltip(false)}
+            >
+              <Animated.View
+                entering={ZoomIn.duration(120)}
+                style={{
+                  position: 'absolute',
+                  bottom: Dimensions.get('window').height - tooltipPos.y + 8,
+                  right: 16,
+                  width: 230,
+                  backgroundColor: '#FFFFFF',
+                  borderRadius: 16,
+                  padding: 16,
+                  shadowColor: '#000',
+                  shadowOffset: { width: 0, height: 4 },
+                  shadowOpacity: 0.18,
+                  shadowRadius: 12,
+                  elevation: 12,
+                  borderWidth: 1,
+                  borderColor: '#F3F4F6',
+                }}
+              >
+                <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 8 }}>
+                  <Image
+                    source={flowerImages[Math.min(memory.correctAnswers, 3) as 0 | 1 | 2 | 3]}
+                    style={{ width: 28, height: 28, marginRight: 8 }}
+                    resizeMode="contain"
+                  />
+                  <Text className="text-foreground font-bold text-sm">Mastery level {memory.correctAnswers}/3</Text>
+                </View>
+                <Text className="text-muted-foreground text-xs leading-relaxed">
+                  {memory.correctAnswers >= 3
+                    ? 'You\'ve fully memorized this phrase! 🎉'
+                    : `Answer correctly ${3 - memory.correctAnswers} more time${3 - memory.correctAnswers === 1 ? '' : 's'} to fully memorize this phrase.`}
+                </Text>
+              </Animated.View>
+            </Pressable>
+          </Modal>
         </View>
         {/* <View className="flex-row items-center mb-6 justify-between bg-muted p-3 rounded-xl border border-border">
             <Image
@@ -150,7 +214,7 @@ const FlashcardPhrase: React.FC<FlashcardPhraseProps> = ({
         </View> */}
 
         <View className="mb-6 flex-1 justify-center">
-            <Text className="text-3xl font-bold text-foreground leading-tight text-center">{phrase.english}</Text>
+            <Text className="text-2xl font-medium text-foreground leading-tight text-center">{phrase.english}</Text>
         </View>
 
         {phrase.audioUrl && (
