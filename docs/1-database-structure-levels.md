@@ -43,7 +43,11 @@ The item contains these fields:
 
 ## Type 5: story
 
-> TBD — gameplay design not yet finalised.
+The item contains these fields:
+* id (string)
+* illustration (string) — image URL
+* text (string)
+* translation (string)
 
 
 

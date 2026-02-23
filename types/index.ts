@@ -36,6 +36,13 @@ export interface PhraseMemory {
   isLearned: boolean;
 }
 
+export interface StoryItem {
+  id: string;
+  illustration: string;
+  text: string;
+  translation: string;
+}
+
 export type LevelType = 'characters' | 'numbers' | 'words' | 'phrases' | 'story';
 
 export interface LevelLinkProps {

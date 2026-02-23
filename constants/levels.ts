@@ -90,4 +90,13 @@ export const LEVELS: LevelConfig[] = [
     requiredLevelTitle: 'Learn Family & Friends', 
     type: 'phrases' 
   },
+  { 
+    id: '10', 
+    courseId: 'story-1', 
+    title: "Story 1", 
+    icon: '/images/icon-phrases.svg', 
+    requiredLevelId: '9', 
+    requiredLevelTitle: 'Learn Family & Friends 2', 
+    type: 'story' 
+  },
 ];
