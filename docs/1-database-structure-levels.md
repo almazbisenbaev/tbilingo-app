@@ -3,7 +3,7 @@
 Each level has these fields along with "items" document:
 * description (string)
 * title (string)
-* type (string, possible options: 'characters', 'numbers', 'words', 'phrases')
+* type (string, possible options: 'characters', 'numbers', 'words', 'phrases', 'story')
 
 ---
 
@@ -40,6 +40,10 @@ The item contains these fields:
 * english (string)
 * georgian (string)
 * id (string)
+
+## Type 5: story
+
+> TBD — gameplay design not yet finalised.
 
 
 
