@@ -1,15 +1,18 @@
 import Button from '@/components/Button';
+import SparkBurst from '@/components/SparkBurst';
+import { Colors } from '@/constants/theme';
 import { FlashcardWordProps } from '@/types';
 import { audioMap } from '@/utils/audioMap';
 import { Ionicons } from '@expo/vector-icons';
 import { setAudioModeAsync, useAudioPlayer, useAudioPlayerStatus } from 'expo-audio';
 import React, { useEffect, useState } from 'react';
-import { ActivityIndicator, Text, View } from 'react-native';
-import { Colors } from '@/constants/theme';
+import { ActivityIndicator, Modal, Pressable, Text, View } from 'react-native';
 
 const FlashcardWord: React.FC<FlashcardWordProps> = ({ word, onNext, onLearned }) => {
   const [showAnswer, setShowAnswer] = useState(false);
   const [showTransliteration, setShowTransliteration] = useState(false);
+  const [celebrating, setCelebrating] = useState(false);
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
   const audioSource = word.audioUrl ? (audioMap[word.audioUrl] || word.audioUrl) : null;
   const player = useAudioPlayer(audioSource);
   const status = useAudioPlayerStatus(player);
@@ -18,7 +21,23 @@ const FlashcardWord: React.FC<FlashcardWordProps> = ({ word, onNext, onLearned }
   useEffect(() => {
     setShowAnswer(false);
     setShowTransliteration(false);
+    setCelebrating(false);
+    setShowConfirmModal(false);
   }, [word]);
+
+  const handleLearned = () => {
+    setShowConfirmModal(true);
+  };
+
+  const handleConfirm = () => {
+    setShowConfirmModal(false);
+    setCelebrating(true);
+  };
+
+  const handleBurstComplete = () => {
+    setCelebrating(false);
+    onLearned();
+  };
 
   useEffect(() => {
     const setupAudio = async () => {
@@ -63,6 +82,44 @@ const FlashcardWord: React.FC<FlashcardWordProps> = ({ word, onNext, onLearned }
 
   return (
     <View className="flex-1 justify-center items-center p-8 bg-card rounded-3xl border-2 border-border">
+      <SparkBurst visible={celebrating} onComplete={handleBurstComplete} />
+
+      <Modal
+        visible={showConfirmModal}
+        transparent
+        animationType="fade"
+        onRequestClose={() => setShowConfirmModal(false)}
+      >
+        <Pressable
+          className="flex-1 justify-center items-center"
+          style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}
+          onPress={() => setShowConfirmModal(false)}
+        >
+          <Pressable
+            onPress={() => {}}
+            className="bg-card rounded-3xl p-6 mx-6 w-full max-w-sm border-2 border-border"
+          >
+            <Text className="text-2xl font-bold text-foreground mb-2 text-center">Mark as Learned</Text>
+            <Text className="text-muted-foreground text-base text-center mb-6">
+              Are you sure you want to mark this word as learned?
+            </Text>
+            <View className="gap-3">
+              <Button
+                variant="outline-success"
+                size="lg"
+                title="Yes, I learned it"
+                onPress={handleConfirm}
+              />
+              <Button
+                variant="default"
+                size="lg"
+                title="Cancel"
+                onPress={() => setShowConfirmModal(false)}
+              />
+            </View>
+          </Pressable>
+        </Pressable>
+      </Modal>
       <Text className="text-2xl font-medium mb-4 text-muted-foreground">{word.english}</Text>
       <Text className="text-5xl font-bold mb-8 text-center text-foreground">{word.georgian}</Text>
       
@@ -111,7 +168,8 @@ const FlashcardWord: React.FC<FlashcardWordProps> = ({ word, onNext, onLearned }
           variant="outline-success"
           size="lg"
           title="Mark as Learned"
-          onPress={onLearned}
+          onPress={handleLearned}
+          disabled={celebrating}
           className="w-full"
         />
       </View>

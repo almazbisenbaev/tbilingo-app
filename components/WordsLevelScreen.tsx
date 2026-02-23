@@ -14,7 +14,7 @@ import { Image } from 'expo-image';
 import { Stack, useRouter } from 'expo-router';
 import { collection, doc, getDoc, getDocs, query, serverTimestamp, setDoc } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react';
-import { ActivityIndicator, Alert, Platform, ScrollView, Text, View } from 'react-native';
+import { ActivityIndicator, Alert, ScrollView, Text, View } from 'react-native';
 
 interface WordsLevelScreenProps {
   courseId: string;
@@ -205,24 +205,6 @@ export default function WordsLevelScreen({
     }
   };
 
-  const handleLearned = () => {
-    if (Platform.OS === 'web') {
-      const confirmed = window.confirm('Are you sure you want to mark this item as learned?');
-      if (confirmed) {
-        confirmLearned();
-      }
-    } else {
-      Alert.alert(
-        'Mark as Learned',
-        'Are you sure you want to mark this item as learned?',
-        [
-          { text: 'Cancel', style: 'cancel' },
-          { text: 'Confirm', onPress: confirmLearned },
-        ],
-      );
-    }
-  };
-
   const finishSession = () => {
     setIsSessionFinished(true);
   };
@@ -280,7 +262,7 @@ export default function WordsLevelScreen({
           key={currentIndex}
           className="flex-1 p-6 justify-center w-full max-w-[640px] self-center"
         >
-          <FlashcardWord word={currentItem} onNext={handleNext} onLearned={handleLearned} />
+          <FlashcardWord word={currentItem} onNext={handleNext} onLearned={confirmLearned} />
         </CardTransition>
       </View>
     );
