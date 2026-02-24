@@ -1,6 +1,6 @@
 import Button from '@/components/Button';
 import { FlashcardProps } from '@/types';
-import { audioMap } from '@/utils/audioMap';
+
 import { Ionicons } from '@expo/vector-icons';
 import { setAudioModeAsync, useAudioPlayer, useAudioPlayerStatus } from 'expo-audio';
 import React, { useEffect, useState } from 'react';
@@ -10,7 +10,7 @@ import { Colors } from '@/constants/theme';
 const FlashcardLetter: React.FC<FlashcardProps> = ({ letter, onNext, onLearned }) => {
   const [showAnswer, setShowAnswer] = useState(false);
   
-  const audioSource = letter.audioUrl ? (audioMap[letter.audioUrl] || letter.audioUrl) : null;
+  const audioSource = letter.audioUrl ?? null;
   const player = useAudioPlayer(audioSource);
   const status = useAudioPlayerStatus(player);
 

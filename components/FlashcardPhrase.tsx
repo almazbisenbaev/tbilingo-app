@@ -1,5 +1,4 @@
 import Button from '@/components/Button';
-import { audioMap } from '@/utils/audioMap';
 import { Ionicons } from '@expo/vector-icons';
 import { setAudioModeAsync, useAudioPlayer, useAudioPlayerStatus } from 'expo-audio';
 import React, { useEffect, useRef, useState } from 'react';
@@ -121,7 +120,7 @@ const FlashcardPhrase: React.FC<FlashcardPhraseProps> = ({
     }
     prevCorrectAnswers.current = memory.correctAnswers;
   }, [memory.correctAnswers]);
-  const audioSource = phrase.audioUrl ? (audioMap[phrase.audioUrl] || phrase.audioUrl) : null;
+  const audioSource = phrase.audioUrl ?? null;
   const player = useAudioPlayer(audioSource);
   const status = useAudioPlayerStatus(player);
 

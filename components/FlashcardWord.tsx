@@ -2,7 +2,6 @@ import Button from '@/components/Button';
 import SparkBurst from '@/components/SparkBurst';
 import { Colors } from '@/constants/theme';
 import { FlashcardWordProps } from '@/types';
-import { audioMap } from '@/utils/audioMap';
 import { Ionicons } from '@expo/vector-icons';
 import { setAudioModeAsync, useAudioPlayer, useAudioPlayerStatus } from 'expo-audio';
 import React, { useEffect, useState } from 'react';
@@ -13,7 +12,7 @@ const FlashcardWord: React.FC<FlashcardWordProps> = ({ word, onNext, onLearned }
   const [showTransliteration, setShowTransliteration] = useState(false);
   const [celebrating, setCelebrating] = useState(false);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
-  const audioSource = word.audioUrl ? (audioMap[word.audioUrl] || word.audioUrl) : null;
+  const audioSource = word.audioUrl ?? null;
   const player = useAudioPlayer(audioSource);
   const status = useAudioPlayerStatus(player);
 

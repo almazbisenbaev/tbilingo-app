@@ -1,5 +1,5 @@
 import Button from '@/components/Button';
-import { audioMap } from '@/utils/audioMap';
+
 import { Ionicons } from '@expo/vector-icons';
 import { setAudioModeAsync, useAudioPlayer, useAudioPlayerStatus } from 'expo-audio';
 import React, { useEffect, useState } from 'react';
@@ -9,7 +9,7 @@ import { FlashcardNumberProps } from '../types';
 const FlashcardNumber: React.FC<FlashcardNumberProps> = ({ number, onNext, onLearned }) => {
   const [showAnswer, setShowAnswer] = useState(false);
   const [showTransliteration, setShowTransliteration] = useState(false);
-  const audioSource = number.audioUrl ? (audioMap[number.audioUrl] || number.audioUrl) : null;
+  const audioSource = number.audioUrl ?? null;
   const player = useAudioPlayer(audioSource);
   const status = useAudioPlayerStatus(player);
 
