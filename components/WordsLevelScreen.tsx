@@ -314,8 +314,8 @@ export default function WordsLevelScreen({
                 You have mastered all words in this course.
               </Text>
               <Button
-                variant="primary"
-                className="mt-6 bg-success border-success border-b-[#3a8a00] w-full"
+                variant="success"
+                className="mt-6 w-full"
                 textClassName="text-white"
                 title="Review Course"
                 onPress={startReviewSession}
