@@ -38,4 +38,6 @@ export const audioMap: Record<string, any> = {
   'words-4.mp3': require('../assets/audio/level-words-basic/words-4.mp3'),
   'words-5.mp3': require('../assets/audio/level-words-basic/words-5.mp3'),
   'words-6.mp3': require('../assets/audio/level-words-basic/words-6.mp3'),
+  'words-7.mp3': require('../assets/audio/level-words-basic/words-7.mp3'),
+  'words-8.mp3': require('../assets/audio/level-words-basic/words-8.mp3'),
 };
