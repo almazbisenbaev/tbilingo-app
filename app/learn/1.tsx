@@ -202,24 +202,7 @@ export default function LevelAlphabetScreen() {
   };
 
   const handleLearned = () => {
-    if (Platform.OS === 'web') {
-      const confirmed = window.confirm("Are you sure you want to mark this item as learned?");
-      if (confirmed) {
-        confirmLearned();
-      }
-    } else {
-      Alert.alert(
-        "Mark as Learned",
-        "Are you sure you want to mark this item as learned?",
-        [
-          { text: "Cancel", style: "cancel" },
-          { 
-            text: "Confirm", 
-            onPress: confirmLearned
-          }
-        ]
-      );
-    }
+    confirmLearned();
   };
 
   const finishSession = () => {
