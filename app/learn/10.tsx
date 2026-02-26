@@ -1,5 +1,5 @@
-import StoryLevelScreen from '@/components/StoryLevelScreen';
+import PhrasesLevelScreen from '@/components/PhrasesLevelScreen';
 
-export default function LevelStory1Screen() {
-  return <StoryLevelScreen courseId="story-1" />;
+export default function LevelFamilyFriends2Screen() {
+  return <PhrasesLevelScreen courseId="family-friends-2" />;
 }

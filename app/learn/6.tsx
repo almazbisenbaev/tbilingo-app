@@ -1,5 +1,5 @@
-import WordsLevelScreen from '@/components/WordsLevelScreen';
+import PhrasesLevelScreen from '@/components/PhrasesLevelScreen';
 
-export default function LevelPronounsScreen() {
-  return <WordsLevelScreen courseId="pronouns" />;
+export default function LevelGreetingsScreen() {
+  return <PhrasesLevelScreen courseId="greetings" />;
 }
