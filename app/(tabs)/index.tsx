@@ -31,6 +31,7 @@ export default function HomeScreen() {
     isCompleted: boolean;
     loading: boolean;
     type?: LevelType;
+    label?: string;
     title?: string;
     description?: string;
     icon?: string;
@@ -413,6 +414,7 @@ export default function HomeScreen() {
             <LevelLink
               key={level.id}
               href={`/learn/${level.id}` as any} // We need to create this route
+              label={data?.label || level.label}
               title={data?.title || level.title}
               icon={data?.icon || level.icon}
               disabled={false}

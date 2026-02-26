@@ -10,6 +10,7 @@ import CircularProgressBar from './CircularProgressBar';
 
 export default function LevelLink({
     href,
+    label,
     title,
     icon,
     disabled = false,
@@ -64,7 +65,8 @@ export default function LevelLink({
             </View>
             
             <View className="items-center">
-                <Text className={`text-lg font-medium text-center ${isCompleted ? 'text-gray-900' : 'text-gray-900'}`}>{title}</Text>
+                <Text className="text-sm uppercase leading-relaxed text-center text-gray-500 mb-2 mt-2">{label}</Text>
+                <Text className={`text-xl font-medium text-center ${isCompleted ? 'text-gray-900' : 'text-gray-900'}`}>{title}</Text>
                 {disabled && (
                     <Text className="text-xs text-muted-foreground uppercase">Coming soon</Text>
                 )}

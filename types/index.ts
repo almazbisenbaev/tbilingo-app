@@ -47,6 +47,7 @@ export type LevelType = 'characters' | 'numbers' | 'words' | 'phrases' | 'story'
 
 export interface LevelLinkProps {
   href: string;
+  label?: string;
   title: string;
   icon: string;
   disabled: boolean;
