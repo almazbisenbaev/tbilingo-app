@@ -41,7 +41,7 @@ export default function LevelLink({
 
     return (
         <View
-            className={`bg-white mb-4 rounded-xl border-2 flex flex-col items-center h-auto min-h-0 overflow-hidden ${
+            className={`bg-white mb-4 rounded-xl flex flex-col items-center h-auto min-h-0 overflow-hidden ${
                 locked ? 'border-gray-100' : 
                 'border-transparent'
             } ${disabled ? 'opacity-50' : ''}`}

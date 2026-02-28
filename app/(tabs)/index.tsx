@@ -9,7 +9,7 @@ import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { Image } from 'expo-image';
 import { GoogleAuthProvider, signInWithCredential, signInWithPopup, signInWithRedirect } from 'firebase/auth';
 import { collection, doc, getDoc, getDocs, onSnapshot, query } from 'firebase/firestore';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { ActivityIndicator, Alert, KeyboardAvoidingView, Platform, Pressable, ScrollView, Text, TextInput, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useFocusEffect } from '@react-navigation/native';
@@ -37,6 +37,22 @@ export default function HomeScreen() {
     icon?: string;
   }>>({});
   const [globalLoading, setGlobalLoading] = useState(false);
+
+  // Scroll-to-current-level
+  const scrollViewRef = useRef<ScrollView>(null);
+  const containerYRef = useRef<number>(0);
+  const levelYRefs = useRef<Record<string, number>>({});
+
+  useEffect(() => {
+    if (globalLoading || Object.keys(levelsData).length === 0) return;
+    const currentLevel = LEVELS.find((level) => !levelsData[level.id]?.isCompleted);
+    if (!currentLevel) return;
+    const y = containerYRef.current + (levelYRefs.current[currentLevel.id] ?? 0);
+    const SCROLL_OFFSET = 100;
+    setTimeout(() => {
+      scrollViewRef.current?.scrollTo({ y: Math.max(0, y - SCROLL_OFFSET), animated: true });
+    }, 150);
+  }, [globalLoading]);
 
   const fetchData = useCallback(async () => {
     if (!currentUser) return;
@@ -374,8 +390,11 @@ export default function HomeScreen() {
 
   return (
     <SafeAreaView className="flex-1" edges={['top']}>
-      <ScrollView className="flex-1" contentContainerStyle={{ paddingBottom: 20 }}>
-        <View className="w-full max-w-[640px] self-center px-4 py-8">
+      <ScrollView ref={scrollViewRef} className="flex-1" contentContainerStyle={{ paddingBottom: 20 }}>
+        <View
+          className="w-full max-w-[640px] self-center px-4 py-8"
+          onLayout={(e) => { containerYRef.current = e.nativeEvent.layout.y; }}
+        >
         <View className="items-center mb-12 mt-4">
           <Image 
             source={imageMap['/images/logo.svg']} 
@@ -411,8 +430,11 @@ export default function HomeScreen() {
           }
 
           return (
-            <LevelLink
+            <View
               key={level.id}
+              onLayout={(e) => { levelYRefs.current[level.id] = e.nativeEvent.layout.y; }}
+            >
+            <LevelLink
               href={`/learn/${level.id}` as any} // We need to create this route
               label={data?.label || level.label}
               title={data?.title || level.title}
@@ -428,6 +450,7 @@ export default function HomeScreen() {
                  Alert.alert("Level Locked", `Complete "${level.requiredLevelTitle}" to unlock this level.`);
               }}
             />
+            </View>
           );
         })}
         </View>
