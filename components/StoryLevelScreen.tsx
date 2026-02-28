@@ -1,6 +1,5 @@
 import Button from '@/components/Button';
 import CloseButton from '@/components/CloseButton';
-import CompletionScreen from '@/components/CompletionScreen';
 import ProgressBar from '@/components/ProgressBar';
 import { Colors } from '@/constants/theme';
 import { useAuth } from '@/contexts/AuthContext';
@@ -27,7 +26,6 @@ export default function StoryLevelScreen({ courseId }: StoryLevelScreenProps) {
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [tooltipVisible, setTooltipVisible] = useState(false);
-  const [isFinished, setIsFinished] = useState(false);
 
   // Audio
   const autoPlayTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -123,7 +121,13 @@ export default function StoryLevelScreen({ courseId }: StoryLevelScreenProps) {
         console.error('Error saving story progress:', e);
       }
     }
-    setIsFinished(true);
+    router.back();
+  };
+
+  const handleReadAgain = () => {
+    player.pause();
+    setTooltipVisible(false);
+    setCurrentIndex(0);
   };
 
   if (loading) {
@@ -141,22 +145,6 @@ export default function StoryLevelScreen({ courseId }: StoryLevelScreenProps) {
         <Text className="text-destructive text-center mb-4">{error}</Text>
         <Button onPress={router.back} variant="secondary" title="Go Back" />
       </View>
-    );
-  }
-
-  if (isFinished) {
-    return (
-      <CompletionScreen
-        sessionLearnedCount={items.length}
-        totalLearnedCount={items.length}
-        totalItemsCount={items.length}
-        onContinue={() => {
-          setCurrentIndex(0);
-          setTooltipVisible(false);
-          setIsFinished(false);
-        }}
-        onExit={() => router.back()}
-      />
     );
   }
 
@@ -284,13 +272,22 @@ export default function StoryLevelScreen({ courseId }: StoryLevelScreenProps) {
           </TouchableOpacity>
 
           {isLastSlide ? (
-            <Button
-              variant="primary"
-              size="lg"
-              title="Finish"
-              onPress={handleFinish}
-              className="flex-1 mx-4"
-            />
+            <View className="flex-1 flex-row gap-3 mx-4">
+              <Button
+                variant="secondary"
+                size="lg"
+                title="Read again"
+                onPress={handleReadAgain}
+                className="flex-1"
+              />
+              <Button
+                variant="primary"
+                size="lg"
+                title="Finish"
+                onPress={handleFinish}
+                className="flex-1"
+              />
+            </View>
           ) : (
             <TouchableOpacity onPress={goNext}>
               <Ionicons name="arrow-forward-circle-outline" size={52} color="#F24822" />
