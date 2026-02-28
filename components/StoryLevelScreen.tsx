@@ -229,9 +229,9 @@ export default function StoryLevelScreen({ courseId }: StoryLevelScreenProps) {
           </TouchableOpacity>
         </View>
 
-        {/* Audio button */}
-        {currentAudioUrl && (
-          <View className="mt-8 items-center">
+        {/* Action buttons: audio + translation */}
+        <View className="mt-8 flex-row gap-4 items-center justify-center">
+          {currentAudioUrl && (
             <TouchableOpacity
               onPress={isPlaying ? stopSound : playSound}
               activeOpacity={0.7}
@@ -256,8 +256,26 @@ export default function StoryLevelScreen({ courseId }: StoryLevelScreenProps) {
                 />
               )}
             </TouchableOpacity>
-          </View>
-        )}
+          )}
+
+          {/* Translation toggle button */}
+          <TouchableOpacity
+            onPress={() => setTooltipVisible(v => !v)}
+            activeOpacity={0.7}
+            style={{
+              width: 64,
+              height: 64,
+              borderRadius: 32,
+              backgroundColor: tooltipVisible ? 'rgba(242,72,34,0.18)' : 'rgba(242,72,34,0.1)',
+              borderWidth: 2,
+              borderColor: tooltipVisible ? 'rgba(242,72,34,0.5)' : 'rgba(242,72,34,0.2)',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <Ionicons name="language" size={30} color={Colors.tint} />
+          </TouchableOpacity>
+        </View>
       </View>
 
       {/* Navigation */}
