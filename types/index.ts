@@ -51,6 +51,7 @@ export interface LevelLinkProps {
   label?: string;
   title: string;
   icon: string;
+  type?: LevelType;
   disabled: boolean;
   locked?: boolean;
   isCompleted?: boolean;

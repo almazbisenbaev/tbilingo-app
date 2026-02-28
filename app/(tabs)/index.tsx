@@ -417,6 +417,7 @@ export default function HomeScreen() {
               label={data?.label || level.label}
               title={data?.title || level.title}
               icon={data?.icon || level.icon}
+              type={data?.type || level.type}
               disabled={false}
               locked={isLocked}
               isCompleted={isCompleted}

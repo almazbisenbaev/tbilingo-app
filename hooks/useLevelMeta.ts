@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 interface LevelMeta {
   title: string;
   description: string;
+  icon?: string;
 }
 
 export function useLevelMeta(courseId: string): LevelMeta {
@@ -22,6 +23,7 @@ export function useLevelMeta(courseId: string): LevelMeta {
           setMeta({
             title: data.title ?? '',
             description: data.description ?? '',
+            icon: data.icon ?? undefined,
           });
         }
       } catch (err) {

@@ -4,6 +4,7 @@ Each level has these fields along with "items" document:
 * description (string)
 * title (string)
 * type (string, possible options: 'characters', 'numbers', 'words', 'phrases', 'story')
+* icon (string) — image URL used as the level's visual. For story levels this is displayed as a full cover image; for other levels it appears inside the circular progress indicator.
 
 ---
 
