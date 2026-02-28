@@ -41,6 +41,7 @@ export interface StoryItem {
   illustration: string;
   text: string;
   translation: string;
+  audioUrl?: string;
 }
 
 export type LevelType = 'characters' | 'numbers' | 'words' | 'phrases' | 'story';

@@ -14,6 +14,19 @@ These levels use a self-assessment flashcard system to introduce foundational kn
     *   When an item is marked as "Learned", it is immediately saved to the database.
     *   Learned items are filtered out and will not appear in future gameplay sessions.
 
+## Story Levels
+**Type:** `story`
+
+Story levels present a linear, slide-based reading experience.
+
+*   **Gameplay:** Users swipe through illustrated slides, each containing Georgian text and its English translation.
+*   **Audio:**
+    *   Each slide may include an `audioUrl`. When present, the audio plays automatically after a **1-second delay** upon opening a slide.
+    *   A circular audio button (speaker/pause icon) is shown below the text, allowing the user to replay or pause the audio at any time.
+    *   Navigating to the next or previous slide stops the current audio immediately.
+*   **Translation Tooltip:** Tapping the Georgian text reveals a tooltip with the English translation.
+*   **Progress Saving:** Completing the final slide marks the entire level as finished in the database.
+
 ## Levels 4-5: Phrases System
 **Courses:** Essential Phrases (4), Business & Work (5)
 

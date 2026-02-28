@@ -2,13 +2,15 @@ import Button from '@/components/Button';
 import CloseButton from '@/components/CloseButton';
 import CompletionScreen from '@/components/CompletionScreen';
 import ProgressBar from '@/components/ProgressBar';
+import { Colors } from '@/constants/theme';
 import { useAuth } from '@/contexts/AuthContext';
 import { db } from '@/firebaseConfig';
 import { StoryItem } from '@/types';
 import { Ionicons } from '@expo/vector-icons';
+import { setAudioModeAsync, useAudioPlayer, useAudioPlayerStatus } from 'expo-audio';
 import { Stack, useRouter } from 'expo-router';
 import { collection, doc, getDocs, query, serverTimestamp, setDoc } from 'firebase/firestore';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { ActivityIndicator, Image, Text, TouchableOpacity, View } from 'react-native';
 
 interface StoryLevelScreenProps {
@@ -26,6 +28,52 @@ export default function StoryLevelScreen({ courseId }: StoryLevelScreenProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [tooltipVisible, setTooltipVisible] = useState(false);
   const [isFinished, setIsFinished] = useState(false);
+
+  // Audio
+  const autoPlayTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const currentAudioUrl = items[currentIndex]?.audioUrl ?? null;
+  const player = useAudioPlayer(currentAudioUrl);
+  const status = useAudioPlayerStatus(player);
+  const isPlaying = status.playing;
+  const isLoadingAudio = currentAudioUrl ? !status.isLoaded : false;
+
+  // Setup audio mode once
+  useEffect(() => {
+    setAudioModeAsync({
+      playsInSilentMode: true,
+      allowsRecording: false,
+      shouldPlayInBackground: false,
+      shouldRouteThroughEarpiece: false,
+    }).catch(err => console.error('Failed to set audio mode:', err));
+  }, []);
+
+  // Auto-play with 1-second delay whenever the slide changes
+  useEffect(() => {
+    if (autoPlayTimerRef.current) {
+      clearTimeout(autoPlayTimerRef.current);
+    }
+    if (!currentAudioUrl) return;
+
+    autoPlayTimerRef.current = setTimeout(() => {
+      player.seekTo(0);
+      player.play();
+    }, 1000);
+
+    return () => {
+      if (autoPlayTimerRef.current) clearTimeout(autoPlayTimerRef.current);
+    };
+  }, [currentIndex, currentAudioUrl]);
+
+  function playSound() {
+    if (currentAudioUrl) {
+      player.seekTo(0);
+      player.play();
+    }
+  }
+
+  function stopSound() {
+    player.pause();
+  }
 
   useEffect(() => {
     const fetchItems = async () => {
@@ -50,11 +98,13 @@ export default function StoryLevelScreen({ courseId }: StoryLevelScreenProps) {
   }, [courseId]);
 
   const goNext = () => {
+    player.pause();
     setTooltipVisible(false);
     setCurrentIndex(prev => prev + 1);
   };
 
   const goPrev = () => {
+    player.pause();
     setTooltipVisible(false);
     setCurrentIndex(prev => prev - 1);
   };
@@ -190,6 +240,36 @@ export default function StoryLevelScreen({ courseId }: StoryLevelScreenProps) {
             </Text>
           </TouchableOpacity>
         </View>
+
+        {/* Audio button */}
+        {currentAudioUrl && (
+          <View className="mt-8 items-center">
+            <TouchableOpacity
+              onPress={isPlaying ? stopSound : playSound}
+              activeOpacity={0.7}
+              style={{
+                width: 64,
+                height: 64,
+                borderRadius: 32,
+                backgroundColor: 'rgba(242,72,34,0.1)',
+                borderWidth: 2,
+                borderColor: 'rgba(242,72,34,0.2)',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              {isLoadingAudio ? (
+                <ActivityIndicator color={Colors.tint} size="large" />
+              ) : (
+                <Ionicons
+                  name={isPlaying ? 'pause' : 'volume-high'}
+                  size={30}
+                  color={Colors.tint}
+                />
+              )}
+            </TouchableOpacity>
+          </View>
+        )}
       </View>
 
       {/* Navigation */}

@@ -48,6 +48,7 @@ The item contains these fields:
 * illustration (string) — image URL
 * text (string)
 * translation (string)
+* audioUrl (string) — audio clip URL for the slide
 
 
 
